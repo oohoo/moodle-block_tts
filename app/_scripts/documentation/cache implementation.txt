@@ -1,0 +1,139 @@
+in tts.js,
+  during JSConfig, 
+  determine if caching is supported.
+  set a global flag.
+  
+  during wipeSpanData, 
+    delete cachestate
+    if CACHING
+      cacehstate = 1
+      store stringkey of text(),voice,service in span.data
+    else cachestate = 2
+      
+  during initialize,
+    set AppState to : CACHE_FETCH before calling prefetch
+    if CACHING_SUPPORTED
+    else start at fatFetch
+    
+  change prefetch to a middle_man function,
+    if CACHE_FETCH 
+      traverse all of the spans and call build sound on all of the spans
+      for which there is local storage.
+        if span has local storage, change state to 1
+        if span does not have local storage, change state to 2
+        span starts with state of zero.
+      when there are no more spans with state of 0, call
+      
+FROM initialize, call: fetchMonitor;fatfetchDone = false;cachefetchDone = false;dialogDone = false;
+
+fetchMonitor: function(){
+  switch(FETCH_STATE){
+    case CACHE_FETCH :
+      call fetch_from_cache();
+      break;
+    case FAT_FETCH :
+      call fat_prefetch();
+      break;
+    case DIALOGUE :
+      call prefetch();
+      break;
+    default:
+      break;
+    }
+  if (FETCH_STATE != FETCH_FINISHED){
+    setTimeout(fetchMonitor,1000);
+  }
+}
+
+fetch_from_cache(){
+  if cacheFetchDone == false && cacheFetchInProgress == false{
+    for each span,
+      if the data key exists
+        buildSound key's value
+        
+        change fetchState to 2
+  }
+  //need a way to track that this phase is continuing;
+}
+
+fetch_fat_fetch(){
+  
+}
+
+buildSound
+  onfail:
+    if fails to init, check the globalfetching state.
+    
+    if it is still in cachefetch, then there is a problem with the mp3 in cache.  temp internet
+    files should be cleared to fix this. Maybe write an alert for this?  could queue the messages and deliver them
+    on the last run of the fetch monitor.
+    
+    if in fatfetch, then there is a problem with the mp3 in cache.
+    
+May need to create an error sound outside of the prefetch span flow.  This will leave this soundObject
+around to be synched to a span if.  if it fails to load 6 times.
+Instruction popup alert.  'You need to clear your internet files: link to video."  also synch up to a dead sound.mp3 .
+    
+    
+SpanState:
+
+NOT_PREFETCHED = 0;
+PREFETCH_IN_PROGRESS = 1;
+SERVER_WAITING_FOR_MP3 = 2;
+SERVER_HAS_MP3 = 3;
+SPAN_HAS_UNLOADED_SOUND = 4;
+SPAN_HAS_LOADED_SOUND = 5;
+SPAN_THREW_ERROR = 6;
+
+SpanFetchMethod:
+NONE = 0;
+CACHE = 1;
+FAT = 2;
+DIALOGUE = 3;
+
+in prefetch,
+  add a check for SpanFetchMethod;
+  case NONE;
+    fetchFromCache
+  case FAT;
+    fetchFat
+    
+1)
+  attempt to fetch each span from storage
+    if storage exists
+    set a blocking truth value for phase 2 and proceede.
+    set spanState to 3 if mp3 exists, else stay at 0;
+    
+    buildSound
+      
+      set a data('building sound') to true.
+      set data('cache-fetch-attempting') to true.
+      
+      onfail (soundIsBad. rebuild the span's sound on the failiureSound, and queue a message).
+      message is (if only some are not playing, how to clear temporary internet files && if continues after that, email admin).
+      change span.data('error sound') = true;
+      
+      onsuccess ()
+      if error sound == true,
+        do normal;
+      else,
+        if key does not exist in storage, add it to storage with the file location.
+        note that key exists should be tracked at fatfetch stage.  Set it at this point.  
+        if the key did not exist at the fatfetch stage, add it to the store.  
+
+2)
+    if span prefetch status is 0 and building sound is false,
+      add the span to a fat fetching request.
+      
+      set a FATFETCH_IN_PROGRESS global to true.
+      make the AJAX request.
+        on success, call buildSound on each of the resulting objects then set FATFETCH_IN_PROGRESS to false;
+        on fail, increment FAT_FETCH_TRIES and call self again.  After a number of tries, set FATFETCH_IN_PROGRESS to false and stop trying.
+        
+        the truth value will be used to block the dialog prefetch that will self call until it is allowed to actually execute.
+  
+    set prefetchStatus to 3 if mp3 exists on server. else stay at 0.
+  
+3)
+    if span prefetch
+      do normal actions.

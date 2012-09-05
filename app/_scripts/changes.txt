@@ -1,0 +1,11 @@
+removed debug from SM2 and using minified version.
+changed css to start controls in top right corner.
+changed float object interval to longer interval in hopes of
+reducing script overhead.  10 frames per second might be ugly.
+
+Proposing to add a pre-prefetch step where a long array is returned.
+This array of all available mp3s is returned and blocks prefetching 
+until all of the mp3s are loaded.
+
+If js can check size, see if it can invalidate browser cache and
+try to download again.

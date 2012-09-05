@@ -1,0 +1,114 @@
+/**
+ * *************************************************************************
+ * *                    OOHOO - TTS - Text To Speech                      **
+ * *************************************************************************
+ * @package     block                                                     **
+ * @subpackage  TTS                                                       **
+ * @name        TTS                                                       **
+ * @copyright   oohoo.biz                                                 **
+ * @link        http://oohoo.biz                                          **
+ * @author      Ryan Thomas (Original Author)                             **
+ * @author      Dustin Durand                                             **
+ * @author      Nicolas Bretin                                            **
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
+ * *************************************************************************
+ * ************************************************************************ */
+
+div#tts_controls {
+    /* 	margin: 0;
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
+          background: transparent;
+    line-height: 1;
+    
+    text-align:left;*/
+    /*border:1px solid black;*/
+    background:transparent;
+    position:relative;
+}
+#tts_controls ul#tts_control_list{
+    /*  list-style: none;
+      list-style-type:none;
+    
+      -moz-padding-start:0;
+    */
+
+    border:#AAA 1px solid;
+    background:#EEE;
+    display:block;
+    padding:2px;
+    margin:0 0 0 0;
+    /*width:200px;
+    text-indent: -1em;
+    margin-left: 0em;*/
+}
+#tts_controls ul#tts_control_list li{
+    display:inline;
+    margin:0;
+    padding:0;
+
+}
+#tts_controls #tts_control_list img{
+    border:0;
+}
+span.loading{
+    background:red;
+}
+span.highlite{
+    background:yellow;
+}
+
+.block_tts .footer
+{
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#tts_loading_screen
+{
+    position:absolute;
+    background:#000 url(images/ajax-loader.gif) no-repeat center center;
+    filter: alpha (opacity=70);
+    opacity: 0.7;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:2;
+}
+
+#tts_play img, #tts_pause img
+{
+    height: 40px;
+    width: 40px;
+}
+
+#tts_skip_backward img, #tts_skip_forward img
+{
+    height: 28px;
+    width: 28px;
+    padding-bottom:5px;
+}
+
+#tts_volume_down img, #tts_volume_up img, #tts_mute img
+{
+    height: 23px;
+    width: 23px;
+}
+
+#tts_volume_slider
+{
+    display:inline-block;
+    width:70px;
+    margin-bottom:5px;
+    margin-left:5px;
+    margin-right:5px;
+}
+
+#tts_volume_up
+{
+    padding-right:3px;
+}

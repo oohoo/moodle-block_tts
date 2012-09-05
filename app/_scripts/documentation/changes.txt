@@ -1,0 +1,35 @@
+removed debug from SM2 and using minified version.
+changed css to start controls in top right corner.
+changed float object interval to longer interval in hopes of
+reducing script overhead.  10 frames per second might be ugly.
+
+Proposing to add a pre-prefetch step where a long array is returned.
+This array of all available mp3s is returned and blocks prefetching 
+until all of the mp3s are loaded.
+
+If js can check size, see if it can invalidate browser cache and
+try to download again.
+
+
+Proposed
+In redesign:
+  
+  employ patterns from JS patterns.
+    mediator and modules
+  
+  use local variables to reduce lookup chains
+  
+  maybe use an anonymous construct to unpollute namespace?
+  
+  maybe decouple things into a mediator between the different jquery plugins and reduce my code into its own plugin
+  
+  change the names of some things.
+  
+  create a (state)control namespace instead of config.
+  
+  create static and protected members.  possibly implement constants via closures and implement functions to interact with them.
+    //constants can be pulled via a javascript call.  use constructors to instantiate some objects through literals within functions.
+    //possibly use objects and inherit them into a mediator.  mediator can use prototypes and constructors or the mediator can DEEP COPY
+    //from the objects to build itself into something new.
+    //other variables outside closure can be manipulated.
+  

@@ -1,0 +1,85 @@
+add in a calculate key function
+
+add in CACHE EXISTS truth values.
+
+buildsound:
+  change the error event to associate the span to the error mp3 (via config locations). if there is a load error.
+  also queue up the alert.
+  call buildErrorSound.
+  change the way that spanState is handled.
+  
+implement BuildErrorSound
+
+implement Locking globals on prefetch to prevent it from doing anything if other stages are in progress.
+implement the fetch_handler function and make init call it instead.
+make fetch_handler call itself on timeout until a prefetch_dialog_done truth value is set.
+essentially, this function makes sure that the 3 tiers of activity happen.
+
+
+spanWipeData:
+  reset blocking truth values for fetch stages
+  reset the alert after failiure truth value
+  reset the span.data('error_sound') truth value
+    
+SpanState:
+
+NOT_PREFETCHED = 0;
+PREFETCH_IN_PROGRESS = 1;
+SERVER_WAITING_FOR_MP3 = 2;
+SERVER_HAS_MP3 = 3;
+SPAN_HAS_UNLOADED_SOUND = 4;
+SPAN_HAS_LOADED_SOUND = 5;
+SPAN_THREW_ERROR = 6;
+    
+1)
+  attempt to fetch each span from storage
+    if storage exists
+    set a blocking truth value for phase 2 and proceede.
+    set spanState to 3 if mp3 exists, else stay at 0;
+    
+    buildSound
+      
+      onfail (soundIsBad. rebuild the span's sound on the failiureSound, and queue a message).
+      message is (if only some are not playing, how to clear temporary internet files && if continues after that, email admin).
+      change span.data('error sound') = true;
+      
+      onsuccess ()
+      if error sound == true,
+        do normal;
+      else,
+        if key does not exist in storage, add it to storage with the file location.
+        note that key exists should be tracked at fatfetch stage.  Set it at this point.  
+        if the key did not exist at the fatfetch stage, add it to the store.  
+
+2)
+    if span prefetch status is 0 and building sound is false,
+      add the span to a fat fetching request.
+      
+      set a FATFETCH_IN_PROGRESS global to true.
+      make the AJAX request.
+        on success, call buildSound on each of the resulting objects then set FATFETCH_IN_PROGRESS to false;
+        on fail, increment FAT_FETCH_TRIES and call self again.  After a number of tries, set FATFETCH_IN_PROGRESS to false and stop trying.
+        
+        the truth value will be used to block the dialog prefetch that will self call until it is allowed to actually execute.
+  
+    set prefetchStatus to 3 if mp3 exists on server. else stay at 0.
+  
+3)
+    if span prefetch
+      do normal actions.
+      
+Add CalculateKey (based on voice, service, and string.  value will be the url).probably use an md4 implementation: http://www.ideaspace.net/misc/hash/ . to do voice+service+text()
+Add PrefetchHandler (setTimeOut fuction which calls different functions based on state of various locks.  an attempt to make asynchronous application behave synchronously.).
+Add PostFetchReporter (setTimeout self until all spans have spanState > 4.  Also count the ones with 6.  When all done, if errors > 1, alert based on a configured message).
+Add BuildErrorSound (add server-side null sound and config)
+Add CacheFetch
+Add FatFetch (add server-side code for this.  May turn fetcher into an object and extend it or just still use the config objects and have a fat fetcher.  also need url configs on this.)
+Modify prefetcher to change a global value if it bombs out.  Prefetch Handler will use this to call PostFetchReporter
+Modify wipeSpanData to reset the locks used by PrefetchHandler.  Add data('stored') bool, and unset it as appropriate.
+Modify buildSound (part of onload:if data('stored') is FALSE and application state is STORAGE_ENABLED, store the value and key).
+                  (modify onerror to just call buildErrorSound on the span after it destructs the failed sound).
+include jStorage and use it along with calculate key to store locations so server can be kept out of as much communication as possible.
+ideally, almost everything will be in temporary files and loaded from cache without server dialog/AJAX.
+
+Error message should inform to try reloading the page.  Then try deleting temp internet files if problem continues.  then contact admin beyond that.
+Just as prefetch probably checks content length after all non alphanum are dropped, other fetches may have to do this.  Or create spans may have to.

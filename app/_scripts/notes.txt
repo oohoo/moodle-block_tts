@@ -1,0 +1,73 @@
+tts.config.services.currentService
+tts.config.services.currentVoice
+
+tts.config.cache.enabled
+
+tts.config.prefetch.blockFatFetch
+tts.config.prefetch.fatFetchInProgress
+tts.config.prefetch.fatFetchAttempts
+tts.config.prefetch.fatFetchDone
+tts.config.prefetch.blockDialogFetch
+
+.data('dirty_mp3',false)
+.data('error_sound_loaded',false)
+.data('text_to_speak','')
+.data('value','')
+.data('stored',false);
+
+tts.prefetcher.fetchController();
+
+fetchController: function(){
+  //check if fatfetch is blocked
+    //check if fatfetch is already in progress
+      //yes
+        //call self on a timeout
+      //no
+        //collect all spans with state == 0
+        //write an object array for them
+        //increment # of fatfetches sent by 1
+        //send this object to fatfetch.php
+          //on fail
+            // if # of errors is acceptable
+            // set fatfetchInProgress to false
+            // try again
+            // else
+            // set fatfetchInProgress to false
+            // set fatfetchDone to true
+            // set blockDialogFetch to false
+            // set blockFatFetch to true
+          //on success
+            //set # of attempts to 0
+            //if the result is good
+            //traverse the array returned
+            //build sounds where appropriate and set states
+            //when all states have been called, do the on fail else housekeeping
+            //there should be some left with state of 0
+            //else
+            //result is bad and do the fail callback
+            //end
+            //call fetchController
+      //check if DialogFetch is blocked
+        //if yes, 
+          call self on timeout
+        //if no,
+          call prefetch
+        //
+          
+	
+	
+			//possibly add another truth value to call a function to see if all spans are at 6+.  If they are, it turns itself off and
+			//sends an error report if warranted.
+			if (!tts.config.prefetch.blockFatFetch){
+				tts.config.prefetch.fatFetchInProgress = true;
+				//collect all of the spans with status of 0.
+				//build a big json array for them
+				//increment the number of attempts and send it off to the server
+				//make ajax request for big array if # of attempts is acceptable.  If too many fails, unblock the next phase and do not call.
+				//set fatFetchDone to true so this part gets skipped.  After it's all done, call prefetch(-1)
+					//on success, set in progress to false.
+						//traverse the result and call build sound + change state accordingly
+					//on fail, set inprogress to false. and call fetchController.
+					
+			}
+		},

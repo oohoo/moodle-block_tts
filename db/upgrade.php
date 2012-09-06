@@ -17,6 +17,13 @@
  * ************************************************************************ */
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * This function is run when the plugin have to be updated
+ * @global stdClass $CFG
+ * @global moodle_database $DB
+ * @param int $oldversion The older version of the plugin installed on the moodle
+ * @return boolean True if the update passed successfully
+ */
 function xmldb_block_tts_upgrade($oldversion)
 {
     global $CFG, $DB;

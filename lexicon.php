@@ -49,9 +49,6 @@ $PAGE->requires->js('/blocks/tts/grid/grid.locale.php');
 $PAGE->requires->js('/blocks/tts/grid/jquery.jqGrid.min.js');
 $PAGE->requires->js('/blocks/tts/grid/grid.js');
 
-
-
-
 echo $OUTPUT->header();
 
 echo '<div id="lexicon_wrapper">';

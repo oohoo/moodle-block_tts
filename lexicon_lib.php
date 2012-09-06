@@ -17,7 +17,6 @@
  * ************************************************************************ */
 require_once('../../config.php');
 
-
 $operation = optional_param('oper', 'get', PARAM_TEXT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
 
@@ -58,6 +57,12 @@ switch ($operation)
     default:break;
 }
 
+/**
+ * Add a record to the lexicon table
+ * @global moodle_database $DB
+ * @param int $courseid The course ID to the lexicon
+ * @return null Return nothing. The result is printed
+ */
 function add_record($courseid)
 {
     global $DB;
@@ -95,6 +100,11 @@ function add_record($courseid)
     }
 }
 
+/**
+ * Delete a record from the lexicon table
+ * @global moodle_database $DB
+ * @return null Return nothing. The result is printed 
+ */
 function del_record()
 {
     global $DB;
@@ -106,8 +116,6 @@ function del_record()
         return;
     }
 
-
-
     if ($DB->delete_records('tts_lexicon', array('id' => $id)))
     {
         print 1;
@@ -118,6 +126,11 @@ function del_record()
     }
 }
 
+/**
+ * Edit a record in the lexicon table
+ * @global moodle_database $DB
+ * @return null Return nothing. The result is printed 
+ */
 function edit_record()
 {
     global $DB;
@@ -137,7 +150,6 @@ function edit_record()
     $record->prenounce = $prenounce;
     $record->lastmodified = time();
 
-
     if ($DB->update_record('tts_lexicon', $record))
     {
         print 1;
@@ -148,6 +160,11 @@ function edit_record()
     }
 }
 
+/**
+ * Return le list of lexicon records for a course ID. The return is directly printed in json
+ * @global moodle_database $DB
+ * @param int $courseid The course ID
+ */
 function get_table_records($courseid)
 {
     global $DB;
@@ -158,7 +175,7 @@ function get_table_records($courseid)
     $sord = optional_param('sord', 'DESC', PARAM_TEXT);
 
     $count = (int) $DB->count_records('tts_lexicon', array('courseid' => $courseid)); //mysql_query("SELECT COUNT(*) AS count FROM invheader"); 
-// calculate the total pages for the query 
+    // calculate the total pages for the query 
     if ($count > 0 && $rows > 0)
     {
         $total_pages = ceil($count / $rows);
@@ -168,21 +185,21 @@ function get_table_records($courseid)
         $total_pages = 0;
     }
 
-// if for some reasons the requested page is greater than the total 
-// set the requested page to total page 
+    // if for some reasons the requested page is greater than the total 
+    // set the requested page to total page 
     if ($page > $total_pages)
         $page = $total_pages;
 
-// calculate the starting position of the rows 
+    // calculate the starting position of the rows 
     $start = $rows * $page - $rows;
 
-// if for some reasons start position is negative set it to 0 
-// typical case is that the user type 0 for the requested page 
+    // if for some reasons start position is negative set it to 0 
+    // typical case is that the user type 0 for the requested page 
     if ($start < 0)
         $start = 0;
 
-// the actual query for the grid data 
-//$SQL = "SELECT invid, invdate, amount, tax,total, note FROM invheader ORDER BY $sidx $sord LIMIT $start , $limit"; 
+    // the actual query for the grid data 
+    //$SQL = "SELECT invid, invdate, amount, tax,total, note FROM invheader ORDER BY $sidx $sord LIMIT $start , $limit"; 
     $results = $DB->get_records('tts_lexicon', array(), "$sidx $sord", '*');
 
     $table_rows = array();

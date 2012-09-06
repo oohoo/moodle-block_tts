@@ -18,6 +18,10 @@
 class block_tts_edit_form extends block_edit_form
 {
 
+    /**
+     * Specific definition...
+     * @param moodleform $mform 
+     */
     protected function specific_definition($mform)
     {
         // Fields for editing HTML block title and contents.

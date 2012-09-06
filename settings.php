@@ -15,20 +15,16 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-
 defined('MOODLE_INTERNAL') || die;
 
 require_once('settings_base.php');
 
 if ($ADMIN->fulltree)
 {
-
     $numSelection = numSelection();
     $volume = volumeSelection();
     $services = serviceSelection();
     $language = languageSelection();
-
-
 
     $settings->add(new admin_setting_configselect('block_tts_max_requests', get_string('max_requests', 'block_tts'),
                     get_string('max_requestsdef', 'block_tts'), 0, $numSelection));

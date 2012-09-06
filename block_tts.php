@@ -17,24 +17,51 @@
  * ************************************************************************ */
 require_once('app/_php/service_lib.php');
 
+/**
+ * Class for the content of the block TTS 
+ */
 class block_tts extends block_base
 {
 
+    /**
+     * Init the block 
+     */
     function init()
     {
         $this->title = get_string('pluginname', 'block_tts');
     }
 
+    /**
+     * Specify if the instance allow multiple blocks
+     * @return boolean 
+     */
     function instance_allow_multiple()
     {
         return false;
     }
 
+    /**
+     * Specify if the instance allow config
+     * @return boolean 
+     */
+    function instance_allow_config()
+    {
+        return true;
+    }
+
+    /**
+     * Specify if the block has a config
+     * @return boolean 
+     */
     function has_config()
     {
         return true;
     }
 
+    /**
+     * Specify where the block is allowed 
+     * @return array The array of page formats
+     */
     function applicable_formats()
     {
         return array(
@@ -44,11 +71,9 @@ class block_tts extends block_base
         );
     }
 
-    function instance_allow_config()
-    {
-        return true;
-    }
-
+    /**
+     * Specialization function
+     */
     function specialization()
     {
 
@@ -63,9 +88,16 @@ class block_tts extends block_base
         }
     }
 
+    /**
+     * Get the content and return it in HTML
+     * @global stdClass $CFG
+     * @global stdClass $COURSE
+     * @global moodle_page $PAGE
+     * @global core_renderer $OUTPUT
+     * @return string Return the formatted content 
+     */
     function get_content()
     {
-
         global $CFG, $COURSE, $PAGE;
 
         //Get global/admin tts configs
@@ -150,18 +182,27 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         return $this->content;
     }
 
+    /**
+     * Specify if the header must be hidden
+     * @return boolean 
+     */
     function hide_header()
     {
         return false;
     }
 
+    /**
+     * Return the preferred width for the block
+     * @return int 
+     */
     function preferred_width()
     {
         // The preferred value is in pixels
         return 230;
     }
 
-    /** This serves as a cleanup for files that have become obselete thanks to a new lexicon entry.
+    /**
+     * This serves as a cleanup for files that have become obselete thanks to a new lexicon entry.
      *   
      * I've decided not to write as a loop or recursive(which would elimate alot of repetitive code/functions), but as ugly repeating functions
      *  This allows a person to see the progression down the filesystem heirchary
@@ -170,8 +211,8 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
      *  The files are always structured as base___lastmodified. By sorting them we can determine the latest version, and delete the obselete
      * ones.
      *
-     * @global type $CFG
-     * @return type 
+     * @global stdClass $CFG
+     * @return boolean  
      */
     function cron()
     {
@@ -203,7 +244,12 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         return true;
     }
 
-//Could be simplified but hardcoded
+    /**
+     * Cron function
+     * Could be simplified but hardcoded
+     * @param string $path The path to the mp3
+     * @param string $dir The dir path
+     */
     function cron_mp3_tts($path, $dir)
     {
 
@@ -226,6 +272,11 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         }
     }
 
+    /**
+     * Cron function
+     * @param string $path The path to the mp3
+     * @param string $dir The dir path
+     */
     function cron_service($path, $dir)
     {
 
@@ -248,6 +299,11 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         }
     }
 
+    /**
+     * Cron function
+     * @param string $path The path to the mp3
+     * @param string $dir The dir path
+     */
     function cron_language($path, $dir)
     {
 
@@ -271,6 +327,11 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         }
     }
 
+    /**
+     * Cron function
+     * @param string $path The path to the mp3
+     * @param string $dir The dir path
+     */
     function cron_audio($path, $dir)
     {
 
@@ -298,6 +359,11 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
         }
     }
 
+    /**
+     * Cron function which delete old files
+     * @param string $path The path to the mp3
+     * @param string $dir The dir path
+     */
     function clean_old_files($audioFiles)
     {
 

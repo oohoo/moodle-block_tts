@@ -150,10 +150,10 @@ $string["OR"] = 'any';
 
 
 $string["col_1"] = 'Expression';
-$string["col_2"] = 'Prenounce';
+$string["col_2"] = 'Pronounce';
 $string["table_caption"] = 'Language Lab TTS Lexicon';
 $string["err_add"] = 'Error Occured Adding.';
-$string["err_del"] = 'Prenounce';
+$string["err_del"] = 'Pronounce';
 $string["err_save"] = 'Error Occured Saving.';
 
 

@@ -27,18 +27,20 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_block_tts_upgrade($oldversion)
 {
     global $CFG, $DB;
-	
+
 
     $dbman = $DB->get_manager();
-	  if ($oldversion < 2012101800) {
+    
+    if ($oldversion < 2012101800)
+    {
 
         // Define table block_tts to be renamed to NEWNAMEGOESHERE
         $table = new xmldb_table('tts');
-		$table2 = new xmldb_table('tts_lexicon');
+        $table2 = new xmldb_table('tts_lexicon');
 
         // Launch rename table for block_tts
         $dbman->rename_table($table, 'block_tts');
-		$dbman->rename_table($table2, 'block_tts_lexicon');
+        $dbman->rename_table($table2, 'block_tts_lexicon');
 
         // tts savepoint reached
         upgrade_block_savepoint(true, 2012101800, 'tts');

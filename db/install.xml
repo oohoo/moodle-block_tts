@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="tts" COMMENT="Default comment for tts, please edit me" NEXT="tts_lexicon">
+    <TABLE NAME="block_tts" COMMENT="Default comment for tts, please edit me" NEXT="block_tts_lexicon">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
       </FIELDS>
@@ -12,7 +12,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="tts_lexicon" COMMENT="Default comment for the table, please edit me" PREVIOUS="tts">
+    <TABLE NAME="block_tts_lexicon" COMMENT="Default comment for the table, please edit me" PREVIOUS="block_tts">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="expression"/>
         <FIELD NAME="expression" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="prenounce"/>

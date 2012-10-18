@@ -76,7 +76,7 @@ function add_record($courseid)
     }
 
     //Don't want same expression with multiple meanings
-    $sql = 'SELECT * FROM {tts_lexicon} t WHERE t.expression = \'' . $expression . '\'';
+    $sql = 'SELECT * FROM {block_tts_lexicon} t WHERE t.expression = \'' . $expression . '\'';
     if ($DB->count_records_sql($sql))
     {
         print 0;
@@ -90,7 +90,7 @@ function add_record($courseid)
     $record->courseid = $courseid;
     $record->lastmodified = time();
 
-    if ($id = $DB->insert_record('tts_lexicon', $record, true))
+    if ($id = $DB->insert_record('block_tts_lexicon', $record, true))
     {
         print $id;
     }
@@ -116,7 +116,7 @@ function del_record()
         return;
     }
 
-    if ($DB->delete_records('tts_lexicon', array('id' => $id)))
+    if ($DB->delete_records('block_tts_lexicon', array('id' => $id)))
     {
         print 1;
     }
@@ -150,7 +150,7 @@ function edit_record()
     $record->prenounce = $prenounce;
     $record->lastmodified = time();
 
-    if ($DB->update_record('tts_lexicon', $record))
+    if ($DB->update_record('block_tts_lexicon', $record))
     {
         print 1;
     }
@@ -174,7 +174,7 @@ function get_table_records($courseid)
     $sidx = optional_param('sidx', 'expression', PARAM_TEXT);
     $sord = optional_param('sord', 'DESC', PARAM_TEXT);
 
-    $count = (int) $DB->count_records('tts_lexicon', array('courseid' => $courseid)); //mysql_query("SELECT COUNT(*) AS count FROM invheader"); 
+    $count = (int) $DB->count_records('block_tts_lexicon', array('courseid' => $courseid)); //mysql_query("SELECT COUNT(*) AS count FROM invheader"); 
     // calculate the total pages for the query 
     if ($count > 0 && $rows > 0)
     {
@@ -200,7 +200,7 @@ function get_table_records($courseid)
 
     // the actual query for the grid data 
     //$SQL = "SELECT invid, invdate, amount, tax,total, note FROM invheader ORDER BY $sidx $sord LIMIT $start , $limit"; 
-    $results = $DB->get_records('tts_lexicon', array(), "$sidx $sord", '*');
+    $results = $DB->get_records('block_tts_lexicon', array(), "$sidx $sord", '*');
 
     $table_rows = array();
 

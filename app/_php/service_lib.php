@@ -19,7 +19,7 @@ function Lexicon($rawText, &$lastmodified)
 {
     global $DB;
 
-    $lexicons = $DB->get_records('tts_lexicon', array());
+    $lexicons = $DB->get_records('block_tts_lexicon', array());
 
     $lastMOD = 0;
 

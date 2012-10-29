@@ -45,6 +45,12 @@ function xmldb_block_tts_upgrade($oldversion)
         // tts savepoint reached
         upgrade_block_savepoint(true, 2012101800, 'tts');
     }
+    
+    if ($oldversion < 2012102900)
+    {
+        // Correction on the wrong table name
+        upgrade_block_savepoint(true, 2012102900, 'tts');
+    }
 
     return true;
 }

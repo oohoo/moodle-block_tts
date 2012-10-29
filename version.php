@@ -16,9 +16,9 @@
  * *************************************************************************
  * ************************************************************************ */
 
-$plugin->version  = 2012101800;
+$plugin->version  = 2012102900;
 $plugin->requires = 2011120500; 
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.0 (Build: 2012101800)';
+$plugin->release = '1.0.1 (Build: 2012102900)';
 $plugin->component = 'block_tts';
 $plugin->cron = 3600; /// Set min time between cron executions to 300 secs (5 mins)

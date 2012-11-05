@@ -51,6 +51,11 @@ function xmldb_block_tts_upgrade($oldversion)
         // Correction on the wrong table name
         upgrade_block_savepoint(true, 2012102900, 'tts');
     }
+    if ($oldversion < 2012110500)
+    {
+        // Fixed language string issue
+        upgrade_block_savepoint(true, 2012110500, 'tts');
+    }
 
     return true;
 }

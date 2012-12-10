@@ -56,6 +56,11 @@ function xmldb_block_tts_upgrade($oldversion)
         // Fixed language string issue
         upgrade_block_savepoint(true, 2012110500, 'tts');
     }
+    if ($oldversion < 2012121000)
+    {
+        //Update logo for Moodle 2.4
+        upgrade_block_savepoint(true, 2012121000, 'tts');
+    }
 
     return true;
 }

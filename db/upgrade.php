@@ -61,6 +61,11 @@ function xmldb_block_tts_upgrade($oldversion)
         //Update logo for Moodle 2.4
         upgrade_block_savepoint(true, 2012121000, 'tts');
     }
+    if ($oldversion < 2012121400)
+    {
+        //Update capabilities for Moodle 2.4
+        upgrade_block_savepoint(true, 2012121400, 'tts');
+    }
 
     return true;
 }

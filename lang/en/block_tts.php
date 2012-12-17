@@ -28,6 +28,8 @@ $string['default_service'] = 'TTS Service';
 $string['default_servicedef'] = 'The current tts service - Currently only google, or microsoft. Both Microsoft and Google have a decent amount of languages, but Google is  smoother than Microsoft (in our opinion).';
 $string["lexicon"] = 'Lexicon';
 $string["lexicon_help"] = 'Lexicon allow to set exception to the pronounciation...';
+$string['tts:addinstance'] = 'Add a new Text to Speech block';
+$string['tts:lexicon'] = 'Allow user to update the lexicon';
 
 
 //GRID

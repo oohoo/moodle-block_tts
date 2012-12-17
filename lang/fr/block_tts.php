@@ -27,7 +27,9 @@ $string['sm_starting_volumedef'] = 'Volume par défaut (0-100).';
 $string['default_service'] = 'Service TTS';
 $string['default_servicedef'] = 'Le service "TTS" actuel - Uniquement Google et Microsoft sont actuellement disponibles. Microsoft et Google ont tous deux un nombre de langages convenable mais Google est plus fluide que Microsoft (à notre avis).';
 $string["lexicon"] = 'Lexicon';
-$string["lexicon_help"] = 'Lexicon permetde ...';
+$string["lexicon_help"] = 'Lexicon permet de ...';
+$string['tts:addinstance'] = 'Ajouter un nouveau bloc de synthèse vocale';
+$string['tts:lexicon'] = 'Autoriser les utilisateurs à modifier le lexicon';
 
 
 //GRID

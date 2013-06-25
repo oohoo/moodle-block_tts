@@ -76,7 +76,7 @@ function add_record($courseid)
     }
 
     //Don't want same expression with multiple meanings
-    $sql = 'SELECT * FROM {block_tts_lexicon} t WHERE t.expression = \'' . $expression . '\'';
+    $sql = 'SELECT count(id) FROM {block_tts_lexicon} t WHERE t.expression = \'' . $expression . '\'';
     if ($DB->count_records_sql($sql))
     {
         print 0;

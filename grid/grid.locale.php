@@ -103,7 +103,7 @@ $.jgrid = {
 				"<?php echo get_string('Jan','block_tts') ?>", "<?php echo get_string('Feb','block_tts') ?>", "<?php echo get_string('Mar','block_tts') ?>", "<?php echo get_string('Apr','block_tts') ?>", "<?php echo get_string('May','block_tts') ?>", "<?php echo get_string('Jun','block_tts') ?>", "<?php echo get_string('Jul','block_tts') ?>", "<?php echo get_string('Aug','block_tts') ?>", "<?php echo get_string('Sep','block_tts') ?>", "<?php echo get_string('Oct','block_tts') ?>", "<?php echo get_string('Nov','block_tts') ?>", "<?php echo get_string('Dec','block_tts') ?>",
 				"<?php echo get_string('January','block_tts') ?>", "<?php echo get_string('February','block_tts') ?>", "<?php echo get_string('March','block_tts') ?>", "<?php echo get_string('April','block_tts') ?>", "<?php echo get_string('May','block_tts') ?>", "<?php echo get_string('June','block_tts') ?>", "<?php echo get_string('July','block_tts') ?>", "<?php echo get_string('August','block_tts') ?>", "<?php echo get_string('September','block_tts') ?>", "<?php echo get_string('October','block_tts') ?>", "<?php echo get_string('November','block_tts') ?>", "<?php echo get_string('December','block_tts') ?>"
 			],
-			AmPm : ["<?php echo get_string('am','block_tts') ?>","<?php echo get_string('pm','block_tts') ?>","<?php echo get_string('AM','block_tts') ?>","<?php echo get_string('PM','block_tts') ?>"],
+			AmPm : ["<?php echo get_string('am','block_tts') ?>","<?php echo get_string('pm','block_tts') ?>","<?php echo get_string('AM1','block_tts') ?>","<?php echo get_string('PM1','block_tts') ?>"],
 			S: function (j) {return j < 11 || j > 13 ? ['st', 'nd', 'rd', 'th'][Math.min((j - 1) % 10, 3)] : 'th'},
 			srcformat: 'Y-m-d',
 			newformat: 'd/m/Y',

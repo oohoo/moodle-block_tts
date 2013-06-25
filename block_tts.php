@@ -129,18 +129,9 @@ var ttsFatFet =  "' . $numSelection[$CFG->block_tts_max_fat_fetch_attempts] . '"
 var ttsImgUrl = "' . $ttsAppURL . '_images/";
 </script>';
 
-        //$PAGE->requires->js('/blocks/tts/tts.js');
         $PAGE->requires->css('/blocks/tts/app/_css/player.css');
-        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.core.css');
-        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.slider.css');
-        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.theme.css');
-
-
-        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery-1.6.1.min.js');
-        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.core.js');
-        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.widget.js');
-        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.mouse.js');
-        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.slider.js');
+        $this->load_jQuery();
+        
         $PAGE->requires->js('/blocks/tts/app/_scripts/json2.js');
         $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.store.js');
         $PAGE->requires->js('/blocks/tts/app/_scripts/md4.js');
@@ -181,6 +172,27 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
 
         return $this->content;
     }
+    
+    function load_jQuery() {
+    global $PAGE;
+    
+    if (moodle_major_version() >= '2.5') {
+        $PAGE->requires->jquery();
+        $PAGE->requires->jquery_plugin('migrate');
+        $PAGE->requires->jquery_plugin('ui');
+        $PAGE->requires->jquery_plugin('ui-css');
+    } else {
+        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.core.css');
+        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.slider.css');
+        $PAGE->requires->css('/blocks/tts/app/_css/jquery.ui.theme.css');
+        
+        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery-1.6.1.min.js');
+        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.core.js');
+        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.widget.js');
+        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.mouse.js');
+        $PAGE->requires->js('/blocks/tts/app/_scripts/jquery.ui.slider.js');
+    }
+}
 
     /**
      * Specify if the header must be hidden

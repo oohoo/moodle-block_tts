@@ -43,7 +43,7 @@ foreach ($directories as $directory)
     }
 }
 
-//%dir%---/sound_cache/%course%/mp3_tts/google/en/11fb1475647d5679733d89acea1632fc.mp3"
+//%dir%---/sound_cache/%course%/audio_tts/google/en/11fb1475647d5679733d89acea1632fc.mp3"
 //Security Checks - we are going to use some basic security to try to keep this file
 //from being abused. Its far from the fastest script, but this helps
 
@@ -58,7 +58,7 @@ if ($directories[1] != 'sound_cache')
 {
     $clean = false;
 }
-elseif ($directories[3] != 'mp3_tts')
+elseif ($directories[3] != 'audio_tts')
 {
     $clean = false;
 }

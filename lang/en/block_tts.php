@@ -25,7 +25,6 @@ $string['max_fat_fetch_attemptsdef'] = 'Maximum amount of requests to the tts se
 $string['sm_starting_volume'] = 'Default Volume';
 $string['sm_starting_volumedef'] = 'Default Volume (0-100).';
 $string['default_service'] = 'TTS Service';
-$string['default_servicedef'] = 'The current tts service - Currently only google, or microsoft. Both Microsoft and Google have a decent amount of languages, but Google is  smoother than Microsoft (in our opinion).';
 $string["lexicon"] = 'Lexicon';
 $string["lexicon_help"] = 'Lexicon allow to set exception to the pronounciation...';
 $string['tts:addinstance'] = 'Add a new Text to Speech block';
@@ -158,4 +157,12 @@ $string["err_add"] = 'Error Occured Adding.';
 $string["err_del"] = 'Pronounce';
 $string["err_save"] = 'Error Occured Saving.';
 
+/*
+ * 07/17/2013
+ */
 
+$string['default_servicedef'] = 'IMPORTANT: The original Google & Microsoft Services have been removed. Microsoft has decided to deprecate their old method and introduce a new method that would requires major changes and it\'s only free for the first 2,000,000 characters. The Google service was never a supported API and google has begun blacklisting IPs who use too large volume.</br></br>';
+$string['default_servicedef'] .= "If you wish to integrate the new Microsoft TTS system or another TTS API - Contact Oohoo.biz";
+
+$string["block_tts_service_api_code"] = 'TTS Service APP/API Key</br>';
+$string["block_tts_service_api_code_desc"] = 'The APP/Client ID that is specific to the TTS Service.';

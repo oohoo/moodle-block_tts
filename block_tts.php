@@ -218,7 +218,7 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
      *   
      * I've decided not to write as a loop or recursive(which would elimate alot of repetitive code/functions), but as ugly repeating functions
      *  This allows a person to see the progression down the filesystem heirchary
-     *      CACHEROOT: COURSE->mp3_tts->SERVICE->LANGUAGE->files
+     *      CACHEROOT: COURSE->audio_tts->SERVICE->LANGUAGE->files
      * 
      *  The files are always structured as base___lastmodified. By sorting them we can determine the latest version, and delete the obselete
      * ones.
@@ -247,7 +247,7 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
 
                 if (is_dir(CACHE_PATH . '/' . $file))
                 {
-                    $this->cron_mp3_tts($path, $file);
+                    $this->cron_audio_tts($path, $file);
                 }
             }
             closedir($handle);
@@ -262,7 +262,7 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
      * @param string $path The path to the mp3
      * @param string $dir The dir path
      */
-    function cron_mp3_tts($path, $dir)
+    function cron_audio_tts($path, $dir)
     {
 
         $path = $path . $dir . '/';
@@ -272,7 +272,7 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
             while (false !== ($file = readdir($handle)))
             {
 
-                if ($file != 'mp3_tts')
+                if ($file != 'audio_tts')
                     continue;
 
                 if (is_dir($path . $file))

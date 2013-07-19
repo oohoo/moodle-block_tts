@@ -200,7 +200,7 @@ function get_table_records($courseid)
 
     // the actual query for the grid data 
     //$SQL = "SELECT invid, invdate, amount, tax,total, note FROM invheader ORDER BY $sidx $sord LIMIT $start , $limit"; 
-    $results = $DB->get_records('block_tts_lexicon', array(), "$sidx $sord", '*');
+    $results = $DB->get_records('block_tts_lexicon', array('courseid' => $courseid), "$sidx $sord", '*');
 
     $table_rows = array();
 

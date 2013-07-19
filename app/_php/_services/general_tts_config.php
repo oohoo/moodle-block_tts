@@ -25,9 +25,10 @@ class Fetch
     public $voice;
     public $badInit;
     public $url;
-    public $mp3;
+    public $audio;
     public $errorText;
     public $lexiconVersion = 0;
+    public $course;
 
     //***override this
     public function __construct()
@@ -36,7 +37,7 @@ class Fetch
     }
 
     //***override this: return true if MP3 recieved, otherwise false
-    public function requestMP3FromService()
+    public function requestAudioFromService()
     {
         
     }
@@ -47,32 +48,32 @@ class Fetch
         return $text;
     }
 
-    public function getMP3NameFromText($text)
+    public function getAudioNameFromText($text)
     {
         return md5(trim(strtoupper($text))) . $this->voice . '___' . $this->lexiconVersion . '.mp3';
     }
 
-    public function getMP3URL()
+    public function getAudioURL()
     {
-        return $this->url . $this->mp3;
+        return $this->url . $this->audio;
     }
 
-    public function getMP3Path()
+    public function getAudioPath()
     {
-        return $this->path . $this->mp3;
+        return $this->path . $this->audio;
     }
 
     //add a 0 byte clause that deletes it and returns false ***NEEDED***
-    public function checkMP3Exists()
+    public function checkAudioExists()
     {
-        if (file_exists($this->getMP3Path()))
+        if (file_exists($this->getAudioPath()))
         {
-            if (filesize($this->getMP3Path()) == 0)
+            if (filesize($this->getAudioPath()) == 0)
             {
-                unlink($this->getMP3Path());
+                unlink($this->getAudioPath());
             }
         }
-        return file_exists($this->getMP3Path());
+        return file_exists($this->getAudioPath());
     }
 
     //return true if path exists, otherwise false

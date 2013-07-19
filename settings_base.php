@@ -46,7 +46,7 @@ function volumeSelection()
  */
 function serviceSelection()
 {
-    $services = array('google', 'microsoft');
+    $services = array('voicerss');
     return $services;
 }
 

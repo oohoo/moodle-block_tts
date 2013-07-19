@@ -231,11 +231,27 @@ var tts = {
 						}
 						/*---*/
 						
-						/*CACHE CODE - check if the browser can do this*/
-						$.storage = new $.store();
-						
-						if($.storage.driver.scope == "browser"){
-							$.extend(tts.config.cache,{enabled:true});
+						//new html 5 storage
+						if(tts.init.supports_html5_storage()){
+							
+                                                        //enable cache
+                                                        $.extend(tts.config.cache,{enabled:true});
+                                                        
+                                                        //get date of newest lexicon stored
+                                                        var date = localStorage['lexicon_date'];
+                                                        
+                                                        //check lexicon table has been updated since the last cache
+                                                        var required_update = true;
+                                                        if(typeof date !== 'undefined') 
+                                                            if(date >= tts.config.lexicon_date) 
+                                                                required_update = false;
+                                                        
+                                                        //cache needs to be refreshed due to lexicon changes
+                                                        if(required_update) {
+                                                           localStorage.clear();
+                                                           localStorage['lexicon_date'] = tts.config.lexicon_date;
+                                                        }
+                                                        
 						}
 						else{
 							$.extend(tts.config.cache,{enabled:false});
@@ -250,6 +266,15 @@ var tts = {
 				url:tts.config.TTS.TTSConfigURL
 			});
 		},
+                
+                supports_html5_storage:function() {
+                    try {
+                      return 'localStorage' in window && window['localStorage'] !== null;
+                    } catch (e) {
+                      return false;
+                    }
+                  },
+
 		startSoundManager2:function(){
 			//lazy loading sound manager 2 to accomadate non-automatic starting of TTS
 			window.SM2_DEFER = true;
@@ -323,17 +348,14 @@ var tts = {
 							.removeData('state')
 							.removeData('file')
 							.removeData('number')
-							.removeData('dirty_mp3')
+							.removeData('dirty_audio')
 							.removeData('error_sound_loaded')
 							.removeData('text_to_speak')
-							.removeData('bad_mp3_url')
+							.removeData('bad_audio_url')
 							.unbind();
 						//if cache is enabled, destroy that data too
 						if (typeof tts.config.cache.enabled !== 'undefined' && tts.config.cache.enabled === true ){
-							$this
-								.removeData('key')
-								.removeData('value')
-								.removeData('stored');
+
 						}
 					});
 				/*CACHE CODE - wipe out cache fields here.  Also reset global caching variables*/
@@ -356,9 +378,9 @@ var tts = {
 							.data('errors',0)
 							.data('state',tts.config.prefetch.NOT_PREFETCHED)
 							.data('number',n)
-							.data('dirty_mp3',false)
+							.data('dirty_audio',false)
 							.data('error_sound_loaded',false)
-							.data('bad_mp3_url','empty')
+							.data('bad_audio_url','empty')
 							.data('text_to_speak',$this.text().replace(/\s+/g,' '))
 							.click( function( event ) {
 								$this = $(this);
@@ -388,15 +410,15 @@ var tts = {
 						CACHE CODE - if there is caching in the browser(global), generate .data('key')
 						Also use data('key') to set data('stored') by looking up if the key value exists.
 						This will be used by other functions to prevent unnecessary server load.
-						*/							
+						*/	
 						if (typeof tts.config.cache.enabled !== 'undefined' && tts.config.cache.enabled === true ){
 							//console.log('can cache');
 							$this.data('key',hex_md4(tts.config.services.currentService + tts.config.services.currentVoice + $this.data('text_to_speak')));
 							//check if stored.
-							if ($.storage.get($this.data('key')) !== null){
+							if (typeof localStorage[$this.data('key')] !== 'undefined'){
 								$this
 									.data('stored',true)
-									.data('value',$.storage.get($this.data('key')))
+									.data('value',localStorage[$this.data('key')])
 									.data('state',3);	
 							
 							if(tts.config.cache.ie){
@@ -724,14 +746,15 @@ var tts = {
 										//console.log(val2.span);
 										//console.log(val2.url);
 										if (!keySpan.data('sound')){
-											keySpan.data('state',tts.config.prefetch.SERVER_HAS_MP3);
+											keySpan.data('state',tts.config.prefetch.SERVER_HAS_AUDIO);
 											keySpan.data('file',val2.url.replace("\\",""));
 											tts.prefetcher.buildSound(keySpan);
 											//console.log(keySpan.data('state'));
 											//console.log(keySpan.data('file'));
 											//console.log(keySpan.data('number'));
 											//console.log(keySpan);
-										}								
+										}
+                                                                                console.log(keySpan.data('sound'));
 									});
 
 								});
@@ -817,7 +840,7 @@ var tts = {
 			else{
 				//ask server for mp3 that is not yet server-side cached
 				$span = tts.config.spans.spanCollection.eq(n);
-				if ($span.data('state') < tts.config.prefetch.SERVER_HAS_MP3){
+				if ($span.data('state') < tts.config.prefetch.SERVER_HAS_AUDIO){
 					//get rid of anything that is not alphanumeric
 					var textToSpeak = $span.text();
 					textToSpeak = textToSpeak.replace(/\s+/g,' ');
@@ -861,13 +884,12 @@ var tts = {
 							obj.file = obj.file.replace("\\","");
 
 							//call again
-							if (obj.state < tts.config.prefetch.SERVER_HAS_MP3){
+							if (obj.state < tts.config.prefetch.SERVER_HAS_AUDIO){
 								this.data('state',obj.state);
-								
 								setTimeout(function(){tts.prefetcher.fetch(obj.span)},2500);
 							}
 							//build sound routine
-							if (obj.state == tts.config.prefetch.SERVER_HAS_MP3){
+							if (obj.state == tts.config.prefetch.SERVER_HAS_AUDIO){
 								this.data('state',obj.state);
 
 								if (!this.data('sound')){
@@ -878,7 +900,6 @@ var tts = {
 								setTimeout(function(){tts.prefetcher.fetch(-1)},500);
 							}
 							if (obj.error){	
-
 								if (typeof this.data('errors') !== 'undefined'){
 									this.data('errors', this.data('errors') + 1);
 									if (this.data('errors') > tts.config.prefetch.MAX_ERRORS){
@@ -932,7 +953,8 @@ var tts = {
 						onload: function(){
 							//$("#tts_init_message").append('<p>sound onload fired ' + sel.data('sound').readyState + ' '+sel.data('file')+'</p>');
 							//SoundManager2 sounds have load states which are checked here.
-							if ( sel.data('sound').readyState == 2 ){
+							
+                                                        if ( sel.data('sound').readyState == 2 ){
 								//destroy the sound and build it again.
 								//$("#xhtml").append('<p>sound failed to load</p>');
 								sel.data('sound').destruct();
@@ -942,8 +964,8 @@ var tts = {
 									return;
 								}
 								//load null sound if span has repeatedly failed to acquire mp3
-								if (sel.data('dirty_mp3') === true){
-									sel.data('bad_mp3_url',sel.data('file'));
+								if (sel.data('dirty_audio') === true){
+									sel.data('bad_audio_url',sel.data('file'));
 									var errorURL;
 									if (tts.config.cache.ie){
 										errorURL = tts.config.prefetch.ERROR_SOUND_URL + '?' +tts.config.cache.ieDirty;
@@ -961,12 +983,11 @@ var tts = {
 								//check if storing
 								if(tts.config.cache.enabled === true){
 									if (sel.data('stored') === true){
-										$.storage.del(sel.data('key'));
+                                                                                localStorage.removeItem(sel.data('key'));
 									}
 								}
-								sel.data('dirty_mp3',true);
-								var timestamp = new Date().getTime();
-								sel.data('file',sel.data('file') + timestamp);
+								sel.data('dirty_audio',true);
+                                                                sel.data('file',sel.data('file'));
 								tts.prefetcher.buildSound(sel);					
 								
 
@@ -990,7 +1011,7 @@ var tts = {
 									sel.data('state',tts.config.prefetch.SPAN_HAS_LOADED_SOUND);
 									if(tts.config.cache.enabled === true){
 										if (sel.data('stored') === false){
-											$.storage.set( sel.data('key'), sel.data('file'));
+                                                                                        localStorage[sel.data('key')] = sel.data('file');
 											sel.data('stored',true);
 										}
 									}					
@@ -1179,7 +1200,6 @@ var tts = {
 					if(tts.config.spans.spanCollection.eq(tts.config.spans.currentSpan).data('state') == tts.config.prefetch.SPAN_HAS_LOADED_SOUND){
 						tts.config.spans.spanCollection.eq(tts.config.spans.currentSpan).data('sound').play();
 						tts.config.spans.playingSpans = 1;
-						//console.log('now playing span: '+tts.config.spans.currentSpan);
 					}
 				}
 			}

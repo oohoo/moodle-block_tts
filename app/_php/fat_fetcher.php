@@ -68,7 +68,7 @@ if (count($spans) > 0 && $course !== -1)
             $service_fetcher = new $service_fetcher_name(
                             CACHE_PATH . '/' . $course . CACHE_DIRECTORY_NAME . $service . '/' . $supportedServices[$service]['voices'][$voice] . '/',
                             CACHE_BASE_URL . '/' . $course . CACHE_DIRECTORY_NAME . $service . '/' . $supportedServices[$service]['voices'][$voice] . '/'
-                            , $supportedServices[$service]['voices'][$voice]);
+                            , $supportedServices[$service]['voices'][$voice], $course);
             //if the prefetcher can locate or create a folder for caching mp3s		
             if (!$service_fetcher->badInit)
             {
@@ -78,13 +78,13 @@ if (count($spans) > 0 && $course !== -1)
                 {
                     //$counter = $span->id;
                     //print_r($span);
-                    $result = $service_fetcher->checkMP3Exists($span->text);
+                    $result = $service_fetcher->checkAudioExists($span->text);
                     //$a is consumed in the AJAX response
-                    if ($result->is_mp3)
+                    if ($result->is_audio)
                     {
                         $a = new StdClass();
                         $a->span = $span->id;
-                        $a->url = $result->mp3URL;
+                        $a->url = $result->audioURL;
                         array_push($results, $a);
                     }
                     else

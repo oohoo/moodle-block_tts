@@ -26,7 +26,7 @@
  *  
  */
 require_once('service_lib.php');
-class Fetch {
+abstract class Fetch {
 	
     public $lexiconVersion = 0;
     
@@ -38,33 +38,16 @@ class Fetch {
         
         //The voice
 	public $voice;
+        
+        public $course;
 	
 	//***override this
 	public function __construct() {}
-	
-	//***if a service has special requirements, override this (Example: does not take numbers)
-	//public function preProcessTextForService($text) { return $text; }			
+			
 	
 	//add a 0 byte clause that deletes it and returns false ***NEEDED***
-	public function checkMP3Exists($text) {
-		
-		$text = $this->preProcessTextForService($text);
-		$mp3_file = md5( trim( strtoupper($text) ) ) . $this->voice . '___' . $this->lexiconVersion . '.mp3' ;
-		$mp3_path = $this->path . $mp3_file;
-		
-		if(file_exists($mp3_path ) ) {
-			if (filesize( $mp3_path ) == 0) {
-				unlink( $mp3_path );
-			}
-		}
-		
-		$result = new StdClass();
-		$result->is_mp3 = file_exists($mp3_path);
-		if($result->is_mp3){
-			$result->mp3URL = $this->url . $mp3_file;
-		}
-		return $result; 
-	}
+	abstract function checkAudioExists($text);
+
 	
 }	
 ?>

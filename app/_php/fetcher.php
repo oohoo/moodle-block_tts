@@ -26,7 +26,7 @@ $span = isset($_REQUEST['span']) ? (int) htmlentities($_REQUEST['span']) : -1;
 $course = isset($_REQUEST['course']) ? (int) htmlentities($_REQUEST['course']) : -1;
 $service = isset($_REQUEST['service']) ? htmlentities($_REQUEST['service']) : DEFAULT_SERVICE;
 $text = isset($_REQUEST['text']) ? htmlentities($_REQUEST['text']) : ERROR_MESSAGE;
-$mp3file = '';
+$audiofile = '';
 
 // if REQUEST data is reasonable, fetch mp3 for it 
 if ($state !== -1 && $span !== -1 && $text !== ERROR_MESSAGE && $course !== -1)
@@ -51,24 +51,25 @@ if ($state !== -1 && $span !== -1 && $text !== ERROR_MESSAGE && $course !== -1)
                             CACHE_PATH . '/' . $course . CACHE_DIRECTORY_NAME . $service . '/' . $supportedServices[$service]['voices'][$voice] . '/',
                             CACHE_BASE_URL . '/' . $course . CACHE_DIRECTORY_NAME . $service . '/' . $supportedServices[$service]['voices'][$voice] . '/',
                             $text,
-                            ERROR_MESSAGE);
+                            ERROR_MESSAGE, 
+                            $course);
 
             //if the prefetcher can locate or create a folder for caching mp3s		
             if (!$service_fetcher->badInit)
             {
 
                 $error = false;
-                if ($service_fetcher->checkMP3Exists())
+                if ($service_fetcher->checkAudioExists())
                 {
                     $state = 3;
-                    $mp3file = $service_fetcher->getMP3URL();
+                    $audiofile = $service_fetcher->getAudioURL();
                     unset($service_fetcher);
                 }
                 else
                 {
                     if ($state == 1)
                     {
-                        if ($service_fetcher->requestMP3FromService())
+                        if ($service_fetcher->requestAudioFromService())
                         {
                             $state = 2;
                         }
@@ -91,7 +92,7 @@ else
 {
     $error = true;
 }
-if ($mp3file == '')
+if ($audiofile == '')
 {
     $error = true;
 }
@@ -99,7 +100,7 @@ if ($mp3file == '')
 $JSONobj = new StdClass();
 $JSONobj->state = $state;
 $JSONobj->span = $span;
-$JSONobj->file = $mp3file;
+$JSONobj->file = $audiofile;
 $JSONobj->error = $error;
 
 header('Cache-Control: no-cache, must-revalidate');

@@ -15,11 +15,11 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-function Lexicon($rawText, &$lastmodified)
-{
+function Lexicon($rawText, &$lastmodified, $courseid)
+{   
     global $DB;
 
-    $lexicons = $DB->get_records('block_tts_lexicon', array());
+    $lexicons = $DB->get_records('block_tts_lexicon', array('courseid'=> $courseid));
 
     $lastMOD = 0;
 

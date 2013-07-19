@@ -41,7 +41,7 @@ function cron()
             if (is_dir(CACHE_PATH . '/' . $file))
             {
                 echo '?';
-                cron_mp3_tts($path, $file);
+                cron_audio_tts($path, $file);
             }
         }
         closedir($handle);
@@ -49,7 +49,7 @@ function cron()
 }
 
 //Could be simplified but hardcoded
-function cron_mp3_tts($path, $dir)
+function cron_audio_tts($path, $dir)
 {
 
     $path = $path . $dir . '/';
@@ -59,7 +59,7 @@ function cron_mp3_tts($path, $dir)
         while (false !== ($file = readdir($handle)))
         {
 
-            if ($file != 'mp3_tts')
+            if ($file != 'audio_tts')
                 continue;
 
             if (is_dir($path . $file))

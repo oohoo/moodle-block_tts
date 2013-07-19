@@ -19,6 +19,7 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once('settings_base.php');
 
+
 if ($ADMIN->fulltree)
 {
     $numSelection = numSelection();
@@ -34,7 +35,11 @@ if ($ADMIN->fulltree)
                     get_string('max_fat_fetch_attemptsdef', 'block_tts'), 1, $numSelection));
     $settings->add(new admin_setting_configselect('block_tts_sm_starting_volume', get_string('sm_starting_volume', 'block_tts'),
                     get_string('sm_starting_volumedef', 'block_tts'), 5, $volume));
+    
     $settings->add(new admin_setting_configselect('block_tts_default_service', get_string('default_service', 'block_tts'),
-                    get_string('default_servicedef', 'block_tts'), 1, $services));
+                    get_string('default_servicedef', 'block_tts'), 0, $services));
+    
+    $settings->add(new admin_setting_configtext('block_tts_default_service_app_id', get_string('block_tts_service_api_code', 'block_tts'),
+                                            get_string('block_tts_service_api_code_desc', 'block_tts'), ''));
 }
 

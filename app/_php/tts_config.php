@@ -23,6 +23,7 @@ require_once('config.php');
 
 $currentVoice = optional_param('voice', null, PARAM_TEXT);
 $currentService = optional_param('service', null, PARAM_TEXT);
+$courseid = required_param('courseid', PARAM_INT);
 
 $JSONobj = new StdClass();
 
@@ -41,8 +42,8 @@ $JSONobj->prefetch->ERROR_REPORT_URL = ERROR_REPORT_URL;
 $JSONobj->prefetch->ERROR_SOUND_URL = ERROR_SOUND_URL;
 $JSONobj->prefetch->NOT_PREFETCHED = 0;
 $JSONobj->prefetch->PREFETCH_IN_PROGRESS = 1;
-$JSONobj->prefetch->SERVER_WAITING_FOR_MP3 = 2;
-$JSONobj->prefetch->SERVER_HAS_MP3 = 3;
+$JSONobj->prefetch->SERVER_WAITING_FOR_AUDIO = 2;
+$JSONobj->prefetch->SERVER_HAS_AUDIO = 3;
 $JSONobj->prefetch->SPAN_HAS_UNLOADED_SOUND = 4;
 $JSONobj->prefetch->SPAN_HAS_LOADED_SOUND = 5;
 $JSONobj->prefetch->SPAN_THREW_ERROR = 6;
@@ -92,6 +93,21 @@ foreach ($supportedServices as $key => $value)
     }
     $JSONobj->services->$key->voices = $service_voices;
 }
+
+$JSONobj->lexicon_date = 0;
+
+
+$sql = "SELECT id, max(lastmodified) as date FROM {block_tts_lexicon} ";
+$sql .= "WHERE courseid = ? ";          
+
+$matches = $DB->get_records_sql($sql, array($courseid));
+
+    if(count($matches) > 0)
+    {
+        $first_value = reset($matches);
+        $JSONobj->lexicon_date = $first_value->date;
+    }
+
 
 //send response
 echo json_encode($JSONobj);

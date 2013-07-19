@@ -39,7 +39,7 @@ define("MAX_FAT_FETCH_ATTEMPTS", $numSelection[$CFG->block_tts_max_fat_fetch_att
 define("HOST_URL", $CFG->wwwroot);
 define("FETCHER_PATH", HOST_URL . "/blocks/tts/app/_php/");
 define("CACHE_PATH", "$CFG->dataroot/sound_cache"); //NOTE: HARDCODED VALUE IN CRON function ... It has issues with requiring this config
-define("CACHE_DIRECTORY_NAME", "/mp3_tts/");
+define("CACHE_DIRECTORY_NAME", "/audio_tts/");
 define("CACHE_BASE_URL", HOST_URL . "/blocks/tts/file.php/sound_cache");
 define("SM_SWF_URL", HOST_URL . "/blocks/tts/app/_scripts/_swf/");
 define("SM_SCRIPT_URL", HOST_URL . "/blocks/tts/app/_scripts/soundmanager2.js");
@@ -67,30 +67,18 @@ define("NOT", "#left-column , #right-column, .accesshide, input, style, noscript
 
 /* * *service variables** */
 $supportedServices = array(
-    "google" =>
+    "voicerss" =>
     array(
         "default_voice" => "moodle_lang",
         "capacity" => 100,
         "voices" => array(
-            //lang(current_language()) => lang(current_language())
-            'de' => 'de',
-            'en' => 'en',
-            'es' => 'es',
-            'fr' => 'fr',
-            'it' => 'it'
-        )
-    ),
-    "microsoft" =>
-    array(
-        "default_voice" => "moodle_lang",
-        "capacity" => 100,
-        "voices" => array(
-            lang(current_language()) => lang(current_language())
+            current_language() => current_language()
         )
     )
 );
 
 define("DEFAULT_SERVICE", $services[$CFG->block_tts_default_service]);
+define("DEFAULT_SERVICE_APP_ID", $services[$CFG->block_tts_default_service]);
 //define("DEFAULT_SERVICE" , "microsoft");	
 //make sure this is a member of $supportedServices[service][voices]
 define("DEFAULT_SERVICE_VOICE", lang(current_language()));

@@ -184,7 +184,7 @@ var ttsImgUrl = "' . $ttsAppURL . '_images/";
     function load_jQuery() {
     global $PAGE;
     
-    if (moodle_major_version() >= '2.5') {
+    if (function_exists('moodle_major_version') && moodle_major_version() >= '2.5') {
         $PAGE->requires->jquery();
         $PAGE->requires->jquery_plugin('migrate');
         $PAGE->requires->jquery_plugin('ui');

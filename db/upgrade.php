@@ -68,8 +68,13 @@ function xmldb_block_tts_upgrade($oldversion)
     }
     if ($oldversion < 2014050900)
     {
-        //Update capabilities for Moodle 2.4
+        //Update  for Moodle 2.6
         upgrade_block_savepoint(true, 2014050900, 'tts');
+    }
+    if ($oldversion < 2014050901)
+    {
+        //Patch Bug Moodle 2.2
+        upgrade_block_savepoint(true, 2014050901, 'tts');
     }
 
     return true;

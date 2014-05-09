@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 
     //do not initialize on non-view pages.  Excludes pages like participation reports and grades.
-    if($("body").attr("id").indexOf("-view") == -1){
+    if(typeof jQuery === 'undefined' || jQuery("body").attr("id").indexOf("-view") == -1){
         return;
     }
 

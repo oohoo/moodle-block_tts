@@ -28,7 +28,15 @@ if ($courseid == 0)
 
 require_login($courseid);
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+//Replace get_context_instance by the class for moodle 2.6+
+if(class_exists('context_module'))
+{
+    $context = context_course::instance($courseid);
+}
+else
+{
+    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+}
 
 if (!has_capability('block/tts:lexicon', $context))
 {
